@@ -15,7 +15,7 @@ struct Moves {
 }
 
 #[derive(Component, Copy, Drop, Serde, SerdeLen)]
-struct Position {
+struct Board_state {
     #[key]
     game_id: felt252,
     a_1: felt252,
@@ -45,4 +45,5 @@ struct Game {
     X: ContractAddress,
     O: ContractAddress
 }
+ 
 

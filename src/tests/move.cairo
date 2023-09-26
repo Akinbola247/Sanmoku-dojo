@@ -4,7 +4,7 @@ mod tests {
     use dojo::test_utils::spawn_test_world;
 
     // project imports
-    use tictactoe::components::{position, Position};
+    use tictactoe::components::{board_state, Board_state};
     use tictactoe::components::{moves, Moves};
     
     
@@ -19,10 +19,10 @@ mod tests {
     // reuse this function for all tests
     fn setup_world() -> IWorldDispatcher {
         // components
-        let mut components = array![position::TEST_CLASS_HASH, moves::TEST_CLASS_HASH];
+        let mut components = array![board_state::TEST_CLASS_HASH, moves::TEST_CLASS_HASH];
 
         // systems
-        let mut systems = array![spawn::TEST_CLASS_HASH, create_Game::TEST_CLASS_HASH];
+        let mut systems = array![spawn::TEST_CLASS_HASH, initiate_game::TEST_CLASS_HASH];
 
         // deploy executor, world and register components/systems
         spawn_test_world(components, systems)
