@@ -290,7 +290,6 @@ mod play_game {
         winning_array.append(Winning_tuple::winning_moves((3, 5, 7)));
 
         //check if combination matches any of the tuple
-        // let current_moves_state = get!(ctx.world, ctx.origin, (Moves));
         let mut moves_array: Array<u32> = ArrayTrait::new();
         moves_array.append(current_moves_state.move_one);
         moves_array.append(current_moves_state.move_two);
