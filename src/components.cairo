@@ -12,6 +12,7 @@ struct Moves {
     move_three: u32,
     move_four: u32,
     move_five: u32,
+    counter: u32,
 }
 
 #[derive(Component, Copy, Drop, Serde, SerdeLen)]
