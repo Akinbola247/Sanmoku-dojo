@@ -7,32 +7,38 @@ mod spawn {
     use tictactoe::components::Game;
     use traits::TryInto;
     use option::OptionTrait;
+    use debug::PrintTrait;
+    use starknet::ContractAddress;
 
     #[event]
     use tictactoe::events::{Event, Spawn};
 
-    fn execute(ctx: Context, avatar: felt252, game_id : felt252) { 
-    let (mut moves, mut board_state, mut game) = get!(ctx.world, game_id, (Moves,Board_state,Game));   
+    fn execute(ctx: Context, avatar: felt252, game_id : felt252, player : ContractAddress) -> () { 
+    let (mut board_state, mut game) = get!(ctx.world, game_id, (Board_state,Game));   
+    let mut moves = get!(ctx.world, player, (Moves));   
 //spawning players
         if avatar == 'X' {
-            assert(game.X == starknet::contract_address_const::<0x0>(), 'Opponent_is_X');
-            game.X = ctx.origin;
-            moves.player = ctx.origin; 
+            assert(player == game.player_one_, 'wrong_input');
+            moves.player = game.player_one_; 
             moves.game_id = game.game_id;
             moves.avatar_choice = avatar;   
             board_state.game_id = game.game_id;              
             set!(ctx.world, (moves, board_state, game));
-               
-        } else if avatar == 'O' {
-            assert(game.O == starknet::contract_address_const::<0x0>(), 'Opponent_is_O');
-            game.O = ctx.origin;           
-            moves.player = ctx.origin; 
+            'player X spawned'.print();
+              
+        } else if avatar == 'O' {    
+            assert(player == game.player_two_, 'wrong_input');
+            moves.player = game.player_two_; 
             moves.game_id = game.game_id;
             moves.avatar_choice = avatar;   
             board_state.game_id = game.game_id;              
             set!(ctx.world, (moves, board_state, game));
+            'player O spawned'.print();
         }      
-        emit!(ctx.world, Spawn { player_1: game.X, player_2: game.O, game_id:game.game_id});
+        emit!(ctx.world, Spawn { player_1: game.player_one_, player_2: game.player_two_, game_id:game.game_id}); 
+        (game.game_id).print();
+        (moves.avatar_choice).print();
+        (moves.player).print();
         return ();
     }
 }
@@ -44,36 +50,41 @@ mod initiate_game {
     use tictactoe::components::Game;
     use traits::TryInto;
     use option::OptionTrait;
+    use starknet::ContractAddress;
 
-fn execute(ctx: Context) -> felt252{
-    let time_now: u64 = starknet::get_block_timestamp();
-    let game_id = pedersen::pedersen(time_now.into(), 'players');    
+fn execute(ctx: Context, player_one : ContractAddress, player_two : ContractAddress ) -> felt252{
+    let game_id = pedersen::pedersen(player_one.into(),player_two.into());    
     game_id.print();
     set!(ctx.world, (Game {
         game_id: game_id,
         winner: '',
-        X: starknet::contract_address_const::<0x0>(),
-        O: starknet::contract_address_const::<0x0>(),
+        player_one_: player_one,
+        player_two_: player_two,
     }));
     game_id
 }
 
+}
+
 #[system]
 mod play_game {
-    use core::debug::PrintTrait;
+    use core::traits::Into;
+    use traits::TryInto;
+use core::debug::PrintTrait;
     use dojo::world::Context;
     use tictactoe::components::Board_state;
     use tictactoe::components::Player_turn;
     use tictactoe::components::Moves;
     use tictactoe::components::Game;
     use array::ArrayTrait;
+    use starknet::ContractAddress;
 
 
 
     #[derive(Serde, Drop)]
     enum Square {
         Top_Left: (),
-        Top: (),
+        Tops: (),
         Top_Right: (),
         Left: (),
         Centre: (),
@@ -83,7 +94,7 @@ mod play_game {
         Bottom_Right: (),
 
     }
-    #[derive(Serde, Drop)]
+    #[derive(Serde, Copy, Drop)]
     enum Winning_tuple {
        winning_moves : (u32, u32, u32),
     }
@@ -92,25 +103,39 @@ mod play_game {
     impl DirectionIntoFelt252 of Into<Square, felt252> {
         fn into(self: Square) -> felt252 {
             match self {
-                Square::Top_Left(()) => 1,
-                Square::Top(()) => 2,
-                Square::Top_Right(()) => 3,
-                Square::Left(()) => 4,
-                Square::Centre(()) => 5,
-                Square::Right(()) => 6,
-                Square::Bottom_Left(()) => 7,
-                Square::Bottom(()) => 8,
-                Square::Bottom_Right(()) => 9,
+                Square::Top_Left(()) => 0,
+                Square::Tops(()) => 1,
+                Square::Top_Right(()) => 2,
+                Square::Left(()) => 3,
+                Square::Centre(()) => 4,
+                Square::Right(()) => 5,
+                Square::Bottom_Left(()) => 6,
+                Square::Bottom(()) => 7,
+                Square::Bottom_Right(()) => 8,
             }
         }
     }
 
+    #[generate_trait]
+    impl BoardImpl of board_state_ {
+            fn printing(self: Board_state) {
+                (self.a_1).print();
+                (self.a_2).print();
+                (self.a_3).print();
+                (self.b_1).print();
+                (self.b_2).print();
+                (self.b_3).print();
+                (self.c_1).print();
+                (self.c_2).print();
+                (self.c_3).print();
+            }
+        }
 
-    fn execute(ctx: Context, game_id : felt252, square: Square){
+    fn execute(ctx: Context, game_id : felt252, square: Square, player : ContractAddress){
      //obtain current board state
     let (mut board_state, mut game, mut next_player) = get!(ctx.world, game_id, (Board_state,Game,Player_turn));   
-    let mut moves = get!(ctx.world, ctx.origin, (Moves)); 
-    assert(ctx.origin == game.X || ctx.origin == game.X, 'Not_player');  
+    let mut moves = get!(ctx.world, player, (Moves)); 
+    // assert(ctx.origin == game.player_one_ || ctx.origin == game.player_two_, 'Not_player');  
     //check player turn
     if moves.avatar_choice == 'X'{
         assert(next_player.X == false, 'Not_your_turn');
@@ -129,8 +154,10 @@ mod play_game {
     //update/set board state here
     set!(ctx.world, (current_move_state, played_move, next_player));
     
+    played_move.printing();
     //call victory state function here
-
+   
+    // check_victory(current_move_state);
 
     }
 
@@ -139,6 +166,7 @@ mod play_game {
         //handle square selected here
         match square {
                 Square::Top_Left(()) => {
+                    assert(board_state.a_1 == '', 'non_empty');
                     board_state.a_1 = player_moves_state.avatar_choice;
                     //check current move count to set the moved piece accordingly here
                     if player_moves_state.counter == 0 {
@@ -153,7 +181,8 @@ mod play_game {
                         player_moves_state.move_five = 1;
                     }
                 },
-                Square::Top(()) => {
+                Square::Tops(()) => {
+                    assert(board_state.a_2 == '', 'non_empty');
                     board_state.a_2 = player_moves_state.avatar_choice;
                     //check current move count to set the moved piece accordingly here
                     if player_moves_state.counter == 0 {
@@ -169,6 +198,7 @@ mod play_game {
                     }
                 },
                 Square::Top_Right(()) => {
+                    assert(board_state.a_3 == '', 'non_empty');
                     board_state.a_3 = player_moves_state.avatar_choice;
                     //check current move count to set the moved piece accordingly here
                     if player_moves_state.counter == 0 {
@@ -184,6 +214,7 @@ mod play_game {
                     }
                 },
                 Square::Left(()) => {
+                    assert(board_state.b_1 == '', 'non_empty');
                     board_state.b_1 = player_moves_state.avatar_choice;
                     //check current move count to set the moved piece accordingly here
                     if player_moves_state.counter == 0 {
@@ -199,6 +230,7 @@ mod play_game {
                     }
                 },
                 Square::Centre(()) => {
+                    assert(board_state.b_2 == '', 'non_empty');
                     board_state.b_2 = player_moves_state.avatar_choice;
                     //check current move count to set the moved piece accordingly here
                     if player_moves_state.counter == 0 {
@@ -214,6 +246,7 @@ mod play_game {
                     }
                 },
                 Square::Right(()) => {
+                    assert(board_state.b_3 == '', 'non_empty');
                     board_state.b_3 = player_moves_state.avatar_choice;
                     //check current move count to set the moved piece accordingly here
                     if player_moves_state.counter == 0 {
@@ -229,6 +262,7 @@ mod play_game {
                     }
                 },
                 Square::Bottom_Left(()) => {
+                    assert(board_state.c_1 == '', 'non_empty');
                     board_state.c_1 = player_moves_state.avatar_choice;
                     //check current move count to set the moved piece accordingly here
                     if player_moves_state.counter == 0 {
@@ -244,6 +278,7 @@ mod play_game {
                     }
                 },
                 Square::Bottom(()) => {
+                    assert(board_state.c_2 == '', 'non_empty');
                     board_state.c_2 = player_moves_state.avatar_choice;
                     if player_moves_state.counter == 0 {
                         player_moves_state.move_one = 8;
@@ -258,6 +293,7 @@ mod play_game {
                     }
                 },
                 Square::Bottom_Right(()) => {
+                    assert(board_state.c_3 == '', 'non_empty');
                     board_state.c_3 = player_moves_state.avatar_choice;
                     if player_moves_state.counter == 0 {
                         player_moves_state.move_one = 9;
@@ -278,7 +314,7 @@ mod play_game {
         (board_state,player_moves_state)
     }
   
-    fn check_victory(mut current_moves_state : Moves){
+    fn check_victory(mut current_moves_state : Moves) -> felt252{
         let mut winning_array: Array<Winning_tuple> = ArrayTrait::new();
         winning_array.append(Winning_tuple::winning_moves((1, 2, 3)));
         winning_array.append(Winning_tuple::winning_moves((4, 5, 6)));
@@ -299,20 +335,59 @@ mod play_game {
 
         //find a way to return a winning array_tupple, arranged in an ascending order
         let mut loop_count = 0;
+        let mut loop_two_count = 0;
+        let hol = moves_array.span();
+        let true_rep : felt252 = 1.into();
+        let false_rep : felt252 = 2.into();
        let res  = loop {
-                if loop_count > winning_array.len(){
-                    break;
+                if loop_two_count > winning_array.len(){
+                    break false_rep;
                 };
-                // let tuple_returned = *winning_array.at(loop_count);
-                // let (tuple_member_one, tuple_member_one, tuple_member_one) = tuple_returned;
-        
-
-                loop_count += 1;
+                let tuple_returned = *winning_array.at(loop_two_count);
+                let (res1, res2, res3 ) = tuple_returned.process();
+                let mut won: Array<u32> = ArrayTrait::new();              
+                    let inner_check = loop {
+                        if loop_count > 5{
+                            break;
+                        };
+                        let item = *hol.at(loop_count);
+                        if item != 0 {
+                            if item == res1 ||
+                               item == res2 ||
+                               item == res3 {
+                                    won.append(item);
+                            }
+                        };
+                      loop_count += 1;
+                    };
+                if won.len() == 3 {
+                     break true_rep;
+                }
+                else if won.len() < 3 && won.len() != 0 {
+                    let mut count = 0;
+                    let length_count = won.len();
+                    loop {
+                        if count > length_count{
+                            break;
+                        }
+                        won.pop_front().unwrap();
+                        count +=1;
+                    };
+                }
+                loop_two_count += 1;
              };
-
+          res
     }
 
-}
-
+        #[generate_trait]
+        impl ProcessingImpl of Processing {
+            fn process(self: Winning_tuple) -> (u32, u32, u32){
+                match self {
+                    Winning_tuple::winning_moves((x, y, z)) => {
+                        (x, y, z)
+                    },
+                }
+            }
+        }
 
 }

@@ -15,6 +15,8 @@ struct Moves {
     counter: u32,
 }
 
+
+
 #[derive(Component, Copy, Drop, Serde, SerdeLen)]
 struct Board_state {
     #[key]
@@ -30,6 +32,9 @@ struct Board_state {
     c_3: felt252,
 }
 
+
+       
+
 #[derive(Component, Copy, Drop, Serde, SerdeLen)]
 struct Player_turn {
     #[key]
@@ -43,8 +48,8 @@ struct Game {
     #[key]
     game_id: felt252,
     winner: felt252,
-    X: ContractAddress,
-    O: ContractAddress
+    player_one_: ContractAddress,
+    player_two_: ContractAddress
 }
  
 
