@@ -5,6 +5,7 @@ use debug::PrintTrait;
 struct Moves {
     #[key]
     player: ContractAddress,
+    opponent: ContractAddress,
     game_id: felt252,
     avatar_choice: felt252,
     move_one: u32,
@@ -13,6 +14,7 @@ struct Moves {
     move_four: u32,
     move_five: u32,
     counter: u32,
+    turn : bool,
 }
 
 

@@ -1,5 +1,7 @@
+
 #[cfg(test)]
 mod tests {
+    use core::debug::PrintTrait;
     use dojo::world::{IWorldDispatcherTrait, IWorldDispatcher};
     use dojo::test_utils::spawn_test_world;
 
@@ -41,15 +43,12 @@ mod tests {
         let id : felt252 = 0x5bb9440e27889a364bcb678b1f679ecd1347acdedcbf36e83494f857cc58026.into();
         world.execute('initiate_game', array![player_one.into(), player_two.into()]);
         world.execute('spawn', array![avatar_one, id, player_one.into()]);
-        world.execute('spawn', array![avatar_two, id, player_two.into()]);
-        world.execute('play_game', array![id, play_game::Square::Top_Left(()).into(), player_one.into()]);
-        world.execute('play_game', array![id, play_game::Square::Tops(()).into(), player_two.into()]);
+        world.execute('spawn', array![avatar_two, id, player_two.into()]);      
+        world.execute('play_game', array![id, play_game::Square::Top_Left(()).into(), player_one.into()]);    
+        world.execute('play_game', array![id, play_game::Square::Tops(()).into(), player_two.into()]);    
         world.execute('play_game', array![id, play_game::Square::Centre(()).into(), player_one.into()]);
-
-        world.execute('play_game', array![id, play_game::Square::Left(()).into(), player_two.into()]);
+        world.execute('play_game', array![id, play_game::Square::Left(()).into(), player_two.into()]);     
         world.execute('play_game', array![id, play_game::Square::Bottom_Right(()).into(), player_one.into()]);
-
-
         // world.execute('play_game', array![id, play_game::Square::Right(()).into(), player_two.into()]);
         // world.execute('play_game', array![id, play_game::Square::Bottom_Left(()).into(), player_one.into()]);
         // world.execute('play_game', array![id, play_game::Square::Bottom(()).into(), player_two.into()]);

@@ -20,6 +20,7 @@ mod spawn {
         if avatar == 'X' {
             assert(player == game.player_one_, 'wrong_input');
             moves.player = game.player_one_; 
+            moves.opponent = game.player_two_;
             moves.game_id = game.game_id;
             moves.avatar_choice = avatar;
             moves.move_one = 404;   
@@ -34,6 +35,7 @@ mod spawn {
         } else if avatar == 'O' {    
             assert(player == game.player_two_, 'wrong_input');
             moves.player = game.player_two_; 
+            moves.opponent = game.player_one_;
             moves.game_id = game.game_id;
             moves.avatar_choice = avatar;
             moves.move_one = 404;   
@@ -80,7 +82,7 @@ fn execute(ctx: Context, player_one : ContractAddress, player_two : ContractAddr
 mod play_game {
     use core::traits::Into;
     use traits::TryInto;
-use core::debug::PrintTrait;
+    use core::debug::PrintTrait;
     use dojo::world::Context;
     use tictactoe::components::Board_state;
     use tictactoe::components::Player_turn;
@@ -88,7 +90,7 @@ use core::debug::PrintTrait;
     use tictactoe::components::Game;
     use array::ArrayTrait;
     use starknet::ContractAddress;
-     use option::OptionTrait;
+    use option::OptionTrait;
 
 
 
@@ -158,33 +160,39 @@ use core::debug::PrintTrait;
      //obtain current board state
     let (mut board_state, mut game, mut next_player) = get!(ctx.world, game_id, (Board_state,Game,Player_turn));   
     let mut moves = get!(ctx.world, player, (Moves)); 
+    let mut opponent_move = get!(ctx.world, moves.opponent, (Moves)); 
+
     // assert(ctx.origin == game.player_one_ || ctx.origin == game.player_two_, 'Not_player');  
     //check player turn
     if moves.avatar_choice == 'X'{
         assert(next_player.X == false, 'Not_your_turn');
     } else if moves.avatar_choice == 'O' {
         assert(next_player.O == false, 'Not_your_turn');
-    }          
+    } 
+
+    assert(moves.turn == false, 'Not_your_turn');         
+    moves.turn = true;
+    opponent_move.turn = false;
     let (played_move, current_move_state) = compute_board_state(board_state, moves, square);
-    //update turn state here
-    if moves.avatar_choice == 'X'{
-        next_player.X = true;
-        next_player.O = false;
-    } else if moves.avatar_choice == 'O' {
-        next_player.X = false;
-        next_player.O = true;
+    
+      //call victory state function here
+    let result = check_victory(current_move_state);
+    
+    if result == 1 && moves.avatar_choice == 'X'{
+            'player X wins'.print(); 
+            'player O lost'.print(); 
+    } else if result == 1 && moves.avatar_choice == 'O' {
+            'player wins O'.print(); 
+            'player X lost'.print(); 
     }
+
     //update/set board state here
-    set!(ctx.world, (current_move_state, played_move, next_player));
+    set!(ctx.world, (current_move_state, played_move, opponent_move));
     
     // played_move.printing();
     // current_move_state.printing_move();
+    // result.print();
     
-    //call victory state function here
-    let result = check_victory(current_move_state);
-
-    result.print();
-
     }
 
    
