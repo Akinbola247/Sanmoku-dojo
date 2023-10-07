@@ -17,8 +17,6 @@ struct Moves {
     turn : bool,
 }
 
-
-
 #[derive(Component, Copy, Drop, Serde, SerdeLen)]
 struct Board_state {
     #[key]
@@ -34,17 +32,6 @@ struct Board_state {
     c_3: felt252,
 }
 
-
-       
-
-#[derive(Component, Copy, Drop, Serde, SerdeLen)]
-struct Player_turn {
-    #[key]
-    game_id: felt252,
-    X: bool,
-    O: bool,
-}
-
 #[derive(Component, Copy, Drop, Serde, SerdeLen)]
 struct Game {
     #[key]
@@ -55,3 +42,4 @@ struct Game {
 }
  
 
+// 0x188fe00c1036f16e54c8fdc1fe519a2ba71805823994912d687770bf4a84dee

@@ -3,7 +3,6 @@ mod spawn {
     use dojo::world::Context;
     use tictactoe::components::Moves;
     use tictactoe::components::Board_state;
-    use tictactoe::components::Player_turn;
     use tictactoe::components::Game;
     use traits::TryInto;
     use option::OptionTrait;
@@ -15,14 +14,15 @@ mod spawn {
 
     fn execute(ctx: Context, avatar: felt252, game_id : felt252, player : ContractAddress) -> () { 
     let (mut board_state, mut game) = get!(ctx.world, game_id, (Board_state,Game));   
-    let mut moves = get!(ctx.world, player, (Moves));   
+    let mut moves = get!(ctx.world, player, (Moves)); 
+    assert(game_id == game.game_id, 'wrong_ID');  
 //spawning players
-        if avatar == 'X' {
+        if avatar == 1 {
             assert(player == game.player_one_, 'wrong_input');
             moves.player = game.player_one_; 
             moves.opponent = game.player_two_;
             moves.game_id = game.game_id;
-            moves.avatar_choice = avatar;
+            moves.avatar_choice = 'X';
             moves.move_one = 404;   
             moves.move_two = 404;   
             moves.move_three = 404;   
@@ -32,12 +32,12 @@ mod spawn {
             set!(ctx.world, (moves, board_state, game));
             'player X spawned'.print();
               
-        } else if avatar == 'O' {    
+        } else if avatar == 2 {    
             assert(player == game.player_two_, 'wrong_input');
             moves.player = game.player_two_; 
             moves.opponent = game.player_one_;
             moves.game_id = game.game_id;
-            moves.avatar_choice = avatar;
+            moves.avatar_choice = 'O';
             moves.move_one = 404;   
             moves.move_two = 404;   
             moves.move_three = 404;   
@@ -85,7 +85,6 @@ mod play_game {
     use core::debug::PrintTrait;
     use dojo::world::Context;
     use tictactoe::components::Board_state;
-    use tictactoe::components::Player_turn;
     use tictactoe::components::Moves;
     use tictactoe::components::Game;
     use array::ArrayTrait;
@@ -158,18 +157,10 @@ mod play_game {
 
     fn execute(ctx: Context, game_id : felt252, square: Square, player : ContractAddress){
      //obtain current board state
-    let (mut board_state, mut game, mut next_player) = get!(ctx.world, game_id, (Board_state,Game,Player_turn));   
+    let (mut board_state, mut game,) = get!(ctx.world, game_id, (Board_state,Game));   
     let mut moves = get!(ctx.world, player, (Moves)); 
-    let mut opponent_move = get!(ctx.world, moves.opponent, (Moves)); 
-
-    // assert(ctx.origin == game.player_one_ || ctx.origin == game.player_two_, 'Not_player');  
+    let mut opponent_move = get!(ctx.world, moves.opponent, (Moves));  
     //check player turn
-    if moves.avatar_choice == 'X'{
-        assert(next_player.X == false, 'Not_your_turn');
-    } else if moves.avatar_choice == 'O' {
-        assert(next_player.O == false, 'Not_your_turn');
-    } 
-
     assert(moves.turn == false, 'Not_your_turn');         
     moves.turn = true;
     opponent_move.turn = false;
@@ -192,7 +183,6 @@ mod play_game {
     // played_move.printing();
     // current_move_state.printing_move();
     // result.print();
-    
     }
 
    
@@ -379,9 +369,7 @@ mod play_game {
                 };
                 let tuple_returned = *winning_array.at(loop_two_count);
                 let (res1, res2, res3 ) = tuple_returned.process();
-                let mut won: Array<u32> = ArrayTrait::new();    
-            
-                // 'running'.print();       
+                let mut won: Array<u32> = ArrayTrait::new();         
                     let inner_check = loop {
                         if loop_count > 4{
                             loop_count = 0;

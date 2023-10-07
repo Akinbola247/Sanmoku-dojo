@@ -38,8 +38,8 @@ mod tests {
         let player_two = starknet::contract_address_const::<0x02>();
 
         let world = setup_world(); 
-        let avatar_one : felt252 = 'X'.into();   
-        let avatar_two : felt252 = 'O'.into();   
+        let avatar_one : felt252 = 1;  
+        let avatar_two : felt252 = 2;  
         let id : felt252 = 0x5bb9440e27889a364bcb678b1f679ecd1347acdedcbf36e83494f857cc58026.into();
         world.execute('initiate_game', array![player_one.into(), player_two.into()]);
         world.execute('spawn', array![avatar_one, id, player_one.into()]);
