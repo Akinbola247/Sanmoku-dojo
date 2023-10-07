@@ -30,7 +30,7 @@ mod tests {
     }
 
     #[test]
-    #[available_gas(300000000)]
+    #[available_gas(30000000000)]
     fn test_player_one_move(){
         let player_one = starknet::contract_address_const::<0x01>();
         let player_two = starknet::contract_address_const::<0x02>();
@@ -44,14 +44,16 @@ mod tests {
         world.execute('spawn', array![avatar_two, id, player_two.into()]);
         world.execute('play_game', array![id, play_game::Square::Top_Left(()).into(), player_one.into()]);
         world.execute('play_game', array![id, play_game::Square::Tops(()).into(), player_two.into()]);
-        world.execute('play_game', array![id, play_game::Square::Top_Right(()).into(), player_one.into()]);
+        world.execute('play_game', array![id, play_game::Square::Centre(()).into(), player_one.into()]);
 
         world.execute('play_game', array![id, play_game::Square::Left(()).into(), player_two.into()]);
-        world.execute('play_game', array![id, play_game::Square::Centre(()).into(), player_one.into()]);
-        world.execute('play_game', array![id, play_game::Square::Right(()).into(), player_two.into()]);
-        world.execute('play_game', array![id, play_game::Square::Bottom_Left(()).into(), player_one.into()]);
-        world.execute('play_game', array![id, play_game::Square::Bottom(()).into(), player_two.into()]);
         world.execute('play_game', array![id, play_game::Square::Bottom_Right(()).into(), player_one.into()]);
+
+
+        // world.execute('play_game', array![id, play_game::Square::Right(()).into(), player_two.into()]);
+        // world.execute('play_game', array![id, play_game::Square::Bottom_Left(()).into(), player_one.into()]);
+        // world.execute('play_game', array![id, play_game::Square::Bottom(()).into(), player_two.into()]);
+        // world.execute('play_game', array![id, play_game::Square::Bottom_Right(()).into(), player_one.into()]);
 
         
     }

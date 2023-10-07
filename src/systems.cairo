@@ -21,7 +21,12 @@ mod spawn {
             assert(player == game.player_one_, 'wrong_input');
             moves.player = game.player_one_; 
             moves.game_id = game.game_id;
-            moves.avatar_choice = avatar;   
+            moves.avatar_choice = avatar;
+            moves.move_one = 404;   
+            moves.move_two = 404;   
+            moves.move_three = 404;   
+            moves.move_four = 404;   
+            moves.move_five = 404;   
             board_state.game_id = game.game_id;              
             set!(ctx.world, (moves, board_state, game));
             'player X spawned'.print();
@@ -30,15 +35,20 @@ mod spawn {
             assert(player == game.player_two_, 'wrong_input');
             moves.player = game.player_two_; 
             moves.game_id = game.game_id;
-            moves.avatar_choice = avatar;   
+            moves.avatar_choice = avatar;
+            moves.move_one = 404;   
+            moves.move_two = 404;   
+            moves.move_three = 404;   
+            moves.move_four = 404;   
+            moves.move_five = 404;   
             board_state.game_id = game.game_id;              
             set!(ctx.world, (moves, board_state, game));
             'player O spawned'.print();
         }      
         emit!(ctx.world, Spawn { player_1: game.player_one_, player_2: game.player_two_, game_id:game.game_id}); 
-        (game.game_id).print();
-        (moves.avatar_choice).print();
-        (moves.player).print();
+        // (game.game_id).print();
+        // (moves.avatar_choice).print();
+        // (moves.player).print();
         return ();
     }
 }
@@ -78,6 +88,7 @@ use core::debug::PrintTrait;
     use tictactoe::components::Game;
     use array::ArrayTrait;
     use starknet::ContractAddress;
+     use option::OptionTrait;
 
 
 
@@ -131,6 +142,18 @@ use core::debug::PrintTrait;
             }
         }
 
+    #[generate_trait]
+    impl MoveImpl of move_state_ {
+            fn printing_move(self: Moves) {
+              (self.move_one).print();
+              (self.move_two).print();
+              (self.move_three).print();
+              (self.move_four).print();
+              (self.move_five).print();
+            }
+        }
+
+
     fn execute(ctx: Context, game_id : felt252, square: Square, player : ContractAddress){
      //obtain current board state
     let (mut board_state, mut game, mut next_player) = get!(ctx.world, game_id, (Board_state,Game,Player_turn));   
@@ -154,10 +177,13 @@ use core::debug::PrintTrait;
     //update/set board state here
     set!(ctx.world, (current_move_state, played_move, next_player));
     
-    played_move.printing();
+    // played_move.printing();
+    // current_move_state.printing_move();
+    
     //call victory state function here
-   
-    // check_victory(current_move_state);
+    let result = check_victory(current_move_state);
+
+    result.print();
 
     }
 
@@ -168,6 +194,22 @@ use core::debug::PrintTrait;
                 Square::Top_Left(()) => {
                     assert(board_state.a_1 == '', 'non_empty');
                     board_state.a_1 = player_moves_state.avatar_choice;
+                    //check current move count to set the moved piece accordingly here
+                    if player_moves_state.counter == 0 {
+                        player_moves_state.move_one = 0;
+                    }else if player_moves_state.counter == 1{
+                        player_moves_state.move_two = 0;
+                    }else if player_moves_state.counter == 2 {
+                        player_moves_state.move_three = 0;
+                    }else if player_moves_state.counter == 3 {
+                        player_moves_state.move_four = 0;
+                    }else if player_moves_state.counter == 4 {
+                        player_moves_state.move_five = 0;
+                    }
+                },
+                Square::Tops(()) => {
+                    assert(board_state.a_2 == '', 'non_empty');
+                    board_state.a_2 = player_moves_state.avatar_choice;
                     //check current move count to set the moved piece accordingly here
                     if player_moves_state.counter == 0 {
                         player_moves_state.move_one = 1;
@@ -181,9 +223,9 @@ use core::debug::PrintTrait;
                         player_moves_state.move_five = 1;
                     }
                 },
-                Square::Tops(()) => {
-                    assert(board_state.a_2 == '', 'non_empty');
-                    board_state.a_2 = player_moves_state.avatar_choice;
+                Square::Top_Right(()) => {
+                    assert(board_state.a_3 == '', 'non_empty');
+                    board_state.a_3 = player_moves_state.avatar_choice;
                     //check current move count to set the moved piece accordingly here
                     if player_moves_state.counter == 0 {
                         player_moves_state.move_one = 2;
@@ -197,9 +239,9 @@ use core::debug::PrintTrait;
                         player_moves_state.move_five = 2;
                     }
                 },
-                Square::Top_Right(()) => {
-                    assert(board_state.a_3 == '', 'non_empty');
-                    board_state.a_3 = player_moves_state.avatar_choice;
+                Square::Left(()) => {
+                    assert(board_state.b_1 == '', 'non_empty');
+                    board_state.b_1 = player_moves_state.avatar_choice;
                     //check current move count to set the moved piece accordingly here
                     if player_moves_state.counter == 0 {
                         player_moves_state.move_one = 3;
@@ -213,9 +255,9 @@ use core::debug::PrintTrait;
                         player_moves_state.move_five = 3;
                     }
                 },
-                Square::Left(()) => {
-                    assert(board_state.b_1 == '', 'non_empty');
-                    board_state.b_1 = player_moves_state.avatar_choice;
+                Square::Centre(()) => {
+                    assert(board_state.b_2 == '', 'non_empty');
+                    board_state.b_2 = player_moves_state.avatar_choice;
                     //check current move count to set the moved piece accordingly here
                     if player_moves_state.counter == 0 {
                         player_moves_state.move_one = 4;
@@ -229,9 +271,9 @@ use core::debug::PrintTrait;
                         player_moves_state.move_five = 4;
                     }
                 },
-                Square::Centre(()) => {
-                    assert(board_state.b_2 == '', 'non_empty');
-                    board_state.b_2 = player_moves_state.avatar_choice;
+                Square::Right(()) => {
+                    assert(board_state.b_3 == '', 'non_empty');
+                    board_state.b_3 = player_moves_state.avatar_choice;
                     //check current move count to set the moved piece accordingly here
                     if player_moves_state.counter == 0 {
                         player_moves_state.move_one = 5;
@@ -245,9 +287,9 @@ use core::debug::PrintTrait;
                         player_moves_state.move_five = 5;
                     }
                 },
-                Square::Right(()) => {
-                    assert(board_state.b_3 == '', 'non_empty');
-                    board_state.b_3 = player_moves_state.avatar_choice;
+                Square::Bottom_Left(()) => {
+                    assert(board_state.c_1 == '', 'non_empty');
+                    board_state.c_1 = player_moves_state.avatar_choice;
                     //check current move count to set the moved piece accordingly here
                     if player_moves_state.counter == 0 {
                         player_moves_state.move_one = 6;
@@ -261,10 +303,9 @@ use core::debug::PrintTrait;
                         player_moves_state.move_five = 6;
                     }
                 },
-                Square::Bottom_Left(()) => {
-                    assert(board_state.c_1 == '', 'non_empty');
-                    board_state.c_1 = player_moves_state.avatar_choice;
-                    //check current move count to set the moved piece accordingly here
+                Square::Bottom(()) => {
+                    assert(board_state.c_2 == '', 'non_empty');
+                    board_state.c_2 = player_moves_state.avatar_choice;
                     if player_moves_state.counter == 0 {
                         player_moves_state.move_one = 7;
                     }else if player_moves_state.counter == 1{
@@ -277,9 +318,9 @@ use core::debug::PrintTrait;
                         player_moves_state.move_five = 7;
                     }
                 },
-                Square::Bottom(()) => {
-                    assert(board_state.c_2 == '', 'non_empty');
-                    board_state.c_2 = player_moves_state.avatar_choice;
+                Square::Bottom_Right(()) => {
+                    assert(board_state.c_3 == '', 'non_empty');
+                    board_state.c_3 = player_moves_state.avatar_choice;
                     if player_moves_state.counter == 0 {
                         player_moves_state.move_one = 8;
                     }else if player_moves_state.counter == 1{
@@ -292,21 +333,6 @@ use core::debug::PrintTrait;
                         player_moves_state.move_five = 8;
                     }
                 },
-                Square::Bottom_Right(()) => {
-                    assert(board_state.c_3 == '', 'non_empty');
-                    board_state.c_3 = player_moves_state.avatar_choice;
-                    if player_moves_state.counter == 0 {
-                        player_moves_state.move_one = 9;
-                    }else if player_moves_state.counter == 1{
-                        player_moves_state.move_two = 9;
-                    }else if player_moves_state.counter == 2 {
-                        player_moves_state.move_three = 9;
-                    }else if player_moves_state.counter == 3 {
-                        player_moves_state.move_four = 9;
-                    }else if player_moves_state.counter == 4 {
-                        player_moves_state.move_five = 9;
-                    }
-                },
         };
          //set move count after playing here
         player_moves_state.counter += 1;
@@ -316,14 +342,14 @@ use core::debug::PrintTrait;
   
     fn check_victory(mut current_moves_state : Moves) -> felt252{
         let mut winning_array: Array<Winning_tuple> = ArrayTrait::new();
-        winning_array.append(Winning_tuple::winning_moves((1, 2, 3)));
-        winning_array.append(Winning_tuple::winning_moves((4, 5, 6)));
-        winning_array.append(Winning_tuple::winning_moves((7, 8, 9)));
+        winning_array.append(Winning_tuple::winning_moves((0, 1, 2)));
+        winning_array.append(Winning_tuple::winning_moves((3, 4, 5)));
+        winning_array.append(Winning_tuple::winning_moves((6, 7, 8)));
+        winning_array.append(Winning_tuple::winning_moves((0, 3, 6)));
         winning_array.append(Winning_tuple::winning_moves((1, 4, 7)));
         winning_array.append(Winning_tuple::winning_moves((2, 5, 8)));
-        winning_array.append(Winning_tuple::winning_moves((3, 6, 9)));
-        winning_array.append(Winning_tuple::winning_moves((1, 5, 9)));
-        winning_array.append(Winning_tuple::winning_moves((3, 5, 7)));
+        winning_array.append(Winning_tuple::winning_moves((0, 4, 8)));
+        winning_array.append(Winning_tuple::winning_moves((2, 4, 6)));
 
         //check if combination matches any of the tuple
         let mut moves_array: Array<u32> = ArrayTrait::new();
@@ -340,40 +366,34 @@ use core::debug::PrintTrait;
         let true_rep : felt252 = 1.into();
         let false_rep : felt252 = 2.into();
        let res  = loop {
-                if loop_two_count > winning_array.len(){
+                if loop_two_count > 7{
                     break false_rep;
                 };
                 let tuple_returned = *winning_array.at(loop_two_count);
                 let (res1, res2, res3 ) = tuple_returned.process();
-                let mut won: Array<u32> = ArrayTrait::new();              
+                let mut won: Array<u32> = ArrayTrait::new();    
+            
+                // 'running'.print();       
                     let inner_check = loop {
-                        if loop_count > 5{
+                        if loop_count > 4{
+                            loop_count = 0;
                             break;
                         };
-                        let item = *hol.at(loop_count);
-                        if item != 0 {
-                            if item == res1 ||
-                               item == res2 ||
-                               item == res3 {
+                        let item = *hol.at(loop_count); 
+                            if item == res1 {
                                     won.append(item);
                             }
-                        };
+                            else if item == res2 {
+                                    won.append(item);
+                            }else if item == res3 {
+                                    won.append(item);
+                            }
+
                       loop_count += 1;
                     };
                 if won.len() == 3 {
                      break true_rep;
-                }
-                else if won.len() < 3 && won.len() != 0 {
-                    let mut count = 0;
-                    let length_count = won.len();
-                    loop {
-                        if count > length_count{
-                            break;
-                        }
-                        won.pop_front().unwrap();
-                        count +=1;
-                    };
-                }
+                }  
                 loop_two_count += 1;
              };
           res
