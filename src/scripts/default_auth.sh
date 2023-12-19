@@ -4,9 +4,9 @@ pushd $(dirname "$0")/..
 
 export RPC_URL="http://localhost:5050";
 
-export WORLD_ADDRESS=$(cat ./target/dev/manifest.json | jq -r '.world.address')
+export WORLD_ADDRESS=$(cat /Users/kenzman/Desktop/dojojam/Sanmoku-dojo/target/dev/manifest.json | jq -r '.world.address')
 
-export ACTIONS_ADDRESS=$(cat ./target/dev/manifest.json | jq -r '.contracts[] | select(.name == "sanmoku::actions::actions" ).address')
+export ACTIONS_ADDRESS=$(cat /Users/kenzman/Desktop/dojojam/Sanmoku-dojo/target/dev/manifest.json | jq -r '.contracts[] | select(.name == "sanmoku::actions::actions" ).address')
 
 echo "---------------------------------------------------------------------------"
 echo world : $WORLD_ADDRESS 
