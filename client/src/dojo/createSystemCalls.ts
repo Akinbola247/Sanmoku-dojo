@@ -10,7 +10,7 @@ export type SystemCalls = ReturnType<typeof createSystemCalls>;
 
 export function createSystemCalls(
   { execute, contractComponents, provider, }: SetupNetworkResult,
-  { Board_state, ERC20Allowance,ERC20Balance,ERC20Meta,Game,Gate,Moves,Players }: ClientComponents
+  { Board_state, ERC20Allowance,ERC20Balance,ERC20Meta,Game,Gate,Moves,Players,Fixedkey }: ClientComponents
  ) {
   
   const initiate = async (signer: Account, player1 : string, player2: string ) => {
@@ -38,14 +38,16 @@ export function createSystemCalls(
   };
 
   const spawnavatar = async (signer: Account, avatar : string, gameid: string, playeraddress : string) => {
-    // mint
+   
+
+
     try {
       const tx = await execute(signer, "actions", "spawn", [
         avatar,
         gameid,
         playeraddress,
       ]);
-      let events = setComponentsFromEvents(
+      const events = setComponentsFromEvents(
         contractComponents,
         getEvents(
           await signer.waitForTransaction(tx.transaction_hash, {
@@ -63,8 +65,15 @@ export function createSystemCalls(
   };
 
   const registerPlayer = async (signer: Account, name : string) => {
-    // mint
-    try {
+      //   const entityId = getEntityIdFromKeys([
+      //     BigInt(signer.address),
+      // ]) as Entity;
+      //   const playerid = uuid();
+      //   Players.addOverride(playerid, {
+      //     entity: entityId,
+      //     value: { player_address: BigInt(entityId), name_: name },
+      // });
+      try {
       const tx = await execute(signer, "actions", "register_player", [
         name
       ]);

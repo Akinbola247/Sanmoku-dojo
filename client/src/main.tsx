@@ -13,9 +13,9 @@ async function init() {
   const setupResult = await setup();
   root.render(
     <React.StrictMode>
-      <DojoProvider value={setupResult}>
+      {/* <DojoProvider value={setupResult}> */}
         <App />
-      </DojoProvider>
+      {/* </DojoProvider> */}
     </React.StrictMode>
   );
 }
