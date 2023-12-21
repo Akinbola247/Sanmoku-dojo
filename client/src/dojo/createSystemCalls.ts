@@ -10,7 +10,7 @@ export type SystemCalls = ReturnType<typeof createSystemCalls>;
 
 export function createSystemCalls(
   { execute, contractComponents, provider, }: SetupNetworkResult,
-  { Board_state, ERC20Allowance,ERC20Balance,ERC20Meta,Game,Gate,Moves,Players,Fixedkey }: ClientComponents
+  { Board, Ercaallowance,Ercbalance,Ercmeta,Game,Gate,Moves,Players,Fixed }: ClientComponents
  ) {
   
   const initiate = async (signer: Account, player1 : string, player2: string ) => {

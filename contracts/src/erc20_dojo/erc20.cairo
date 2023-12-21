@@ -30,7 +30,7 @@ trait IERC20CamelOnly<TState> {
 #[starknet::contract]
 mod erc_systems {
     use core::option::OptionTrait;
-    use sanmoku::erc20_dojo::erc20_models::{ERC20Allowance, ERC20Balance, ERC20Meta};
+    use sanmoku::erc20_dojo::erc20_models::{Ercaallowance, Ercbalance, Ercmeta};
     use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
     use integer::BoundedInt;
     use super::IERC20;
@@ -130,7 +130,7 @@ mod erc_systems {
             let owner = get_caller_address();
             self
                 .set_allowance(
-                    ERC20Allowance { token: get_contract_address(), owner, spender, amount }
+                    Ercaallowance { token: get_contract_address(), owner, spender, amount }
                 );
             true
         }
@@ -207,8 +207,8 @@ mod erc_systems {
             IWorldDispatcher { contract_address: self._world.read() }
         }
 
-        fn get_meta(self: @ContractState) -> ERC20Meta {
-            get!(self.world(), get_contract_address(), ERC20Meta)
+        fn get_meta(self: @ContractState) -> Ercmeta {
+            get!(self.world(), get_contract_address(), Ercmeta)
         }
 
         // Helper function to update total_supply model
@@ -221,14 +221,14 @@ mod erc_systems {
         }
 
         // Helper function for balance model
-        fn get_balance(self: @ContractState, account: ContractAddress) -> ERC20Balance {
-            get!(self.world(), (get_contract_address(), account), ERC20Balance)
+        fn get_balance(self: @ContractState, account: ContractAddress) -> Ercbalance {
+            get!(self.world(), (get_contract_address(), account), Ercbalance)
         }
 
         fn update_balance(
             ref self: ContractState, account: ContractAddress, subtract: u256, add: u256
         ) {
-            let mut balance: ERC20Balance = self.get_balance(account);
+            let mut balance: Ercbalance = self.get_balance(account);
             // adding and subtracting is fewer steps than if
             balance.amount = balance.amount - subtract;
             balance.amount = balance.amount + add;
@@ -238,8 +238,8 @@ mod erc_systems {
         // Helper function for allowance model
         fn get_allowance(
             self: @ContractState, owner: ContractAddress, spender: ContractAddress,
-        ) -> ERC20Allowance {
-            get!(self.world(), (get_contract_address(), owner, spender), ERC20Allowance)
+        ) -> Ercaallowance {
+            get!(self.world(), (get_contract_address(), owner, spender), Ercaallowance)
         }
 
         fn update_allowance(
@@ -256,7 +256,7 @@ mod erc_systems {
             self.set_allowance(allowance);
         }
 
-        fn set_allowance(ref self: ContractState, allowance: ERC20Allowance) {
+        fn set_allowance(ref self: ContractState, allowance: Ercaallowance) {
             assert(!allowance.owner.is_zero(), Errors::APPROVE_FROM_ZERO);
             assert(!allowance.spender.is_zero(), Errors::APPROVE_TO_ZERO);
             set!(self.world(), (allowance));
@@ -281,7 +281,7 @@ mod erc_systems {
     #[generate_trait]
     impl InternalImpl of InternalTrait {
         fn initializer(ref self: ContractState, name: felt252, symbol: felt252) {
-            let meta = ERC20Meta { token: get_contract_address(), name, symbol, total_supply: 0 };
+            let meta = Ercmeta { token: get_contract_address(), name, symbol, total_supply: 0 };
             set!(self.world(), (meta));
         }
 
@@ -304,7 +304,7 @@ mod erc_systems {
         ) {
             self
                 .set_allowance(
-                    ERC20Allowance { token: get_contract_address(), owner, spender, amount }
+                    Ercaallowance { token: get_contract_address(), owner, spender, amount }
                 );
         }
 
