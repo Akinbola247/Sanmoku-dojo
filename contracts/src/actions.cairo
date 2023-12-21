@@ -1,4 +1,4 @@
-use sanmoku::models::{Moves, Board_state, Game, Square};
+use sanmoku::models::{Moves, Board, Game, Square};
 use starknet::{ContractAddress};
 
 // define the interface
@@ -17,7 +17,7 @@ trait IActions<TContractState> {
 
 #[dojo::contract]
 mod actions {
-    use sanmoku::models::{Moves, Board_state, Game, Square, Winning_tuple, Gate,Players,Players_tuple,Fixedkey};
+    use sanmoku::models::{Moves, Board, Game, Square, Winning_tuple, Gate,Players,Players_tuple,Fixed};
     use sanmoku::erc20_dojo::erc20::{IERC20Dispatcher, IERC20DispatcherTrait};
     use traits::TryInto;
     use option::OptionTrait;
@@ -59,11 +59,11 @@ mod actions {
         ) -> felt252 {
             let world = self.world_dispatcher.read();
             let key = starknet::contract_address_const::<0x0123>();
-            let worldcounter = get!(world, key, (Fixedkey));           
+            let worldcounter = get!(world, key, (Fixed));           
             let game_id = worldcounter.worldcount;
             set!(
                 world,
-                (Fixedkey {fixed_key : key,
+                (Fixed {fixed_key : key,
                     worldcount: worldcounter.worldcount + 1
                 })
             );
@@ -77,7 +77,7 @@ mod actions {
         }
         fn spawn(self: @ContractState, avatar: felt252, game_id: felt252, player: ContractAddress) {
             let world = self.world_dispatcher.read();
-            let (mut board_state, mut game) = get!(world, game_id, (Board_state, Game));
+            let (mut board_state, mut game) = get!(world, game_id, (Board, Game));
             let mut moves = get!(world, player, (Moves));
             assert(game_id == game.game_id, 'wrong_ID');
             //spawning players
@@ -121,7 +121,7 @@ mod actions {
             let world = self.world_dispatcher.read();
             let player = get_caller_address();
             // obtain current board state
-            let (mut board_state, mut game,) = get!(world, game_id, (Board_state, Game));
+            let (mut board_state, mut game,) = get!(world, game_id, (Board, Game));
             let mut moves = get!(world, player, (Moves));
             let mut opponent_move = get!(world, moves.opponent, (Moves));
             // check player 
@@ -173,7 +173,7 @@ mod actions {
 
         fn restart_game(self: @ContractState, game_id: felt252, player1 :ContractAddress, player2: ContractAddress) {
             let world = self.world_dispatcher.read();
-            let (mut board_state, mut game) = get!(world, game_id, (Board_state, Game));
+            let (mut board_state, mut game) = get!(world, game_id, (Board, Game));
             let mut moves = get!(world, player1, (Moves));
             let mut moves2 = get!(world, player2, (Moves));
             assert(game_id == game.game_id, 'wrong_ID');
@@ -227,8 +227,8 @@ mod actions {
     }
 
     fn compute_board_state(
-        mut board_state: Board_state, mut player_moves_state: Moves, square: Square
-    ) -> (Board_state, Moves) {
+        mut board_state: Board, mut player_moves_state: Moves, square: Square
+    ) -> (Board, Moves) {
         //handle square selected here
         match square {
             Square::Top_Left(()) => {

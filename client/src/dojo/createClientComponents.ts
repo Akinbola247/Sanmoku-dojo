@@ -1,4 +1,4 @@
-import { overridableComponent } from "@latticexyz/recs";
+import { overridableComponent } from "@dojoengine/recs";
 import { SetupNetworkResult } from "./setupNetwork";
 
 export type ClientComponents = ReturnType<typeof createClientComponents>;
@@ -8,14 +8,14 @@ export function createClientComponents({
 }: SetupNetworkResult) {
   return {
     ...contractComponents,
-    Board_state: overridableComponent(contractComponents.Board_state),
-    ERC20Allowance: overridableComponent(contractComponents.ERC20Allowance),
-    ERC20Balance: overridableComponent(contractComponents.ERC20Balance),
-    ERC20Meta: overridableComponent(contractComponents.ERC20Meta),
+    Board: overridableComponent(contractComponents.Board),
+    Ercaallowance: overridableComponent(contractComponents.Ercaallowance),
+    Ercbalance: overridableComponent(contractComponents.Ercbalance),
+    Ercmeta: overridableComponent(contractComponents.Ercmeta),
     Game: overridableComponent(contractComponents.Game),
     Gate: overridableComponent(contractComponents.Gate),
     Moves: overridableComponent(contractComponents.Moves),
     Players: overridableComponent(contractComponents.Players),
-    Fixedkey: overridableComponent(contractComponents.Fixedkey)
+    Fixed: overridableComponent(contractComponents.Fixed)
   };
 }

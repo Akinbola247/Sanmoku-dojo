@@ -3,7 +3,6 @@ import { useDojo } from "./DojoContext";
 import { useComponentValue } from "@dojoengine/react";
 import { Entity } from "@dojoengine/recs";
 import { useEffect, useState } from "react";
-import { setComponentsFromGraphQLEntities } from "@dojoengine/utils";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
@@ -17,13 +16,13 @@ function App() {
 
   //USE DOJO OPTION
 
-  // const {
-  //   setup: {
-  //     systemCalls: { initiate, spawnavatar, registerPlayer, restart },
-  //     components : {Moves,Board_state,Game,Gate,Players,Fixedkey},
-  //   },
-  //   account: { create, list, select, account, isDeploying, clear},
-  // } = useDojo();
+  const {
+    setup: {
+      systemCalls: { initiate, spawnavatar, registerPlayer, restart },
+      components : {Moves,Board,Game,Gate,Players,Fixed},
+    },
+    account: { create, list, select, account, isDeploying, clear},
+  } = useDojo();
 
 
   // entity id we are syncing

@@ -18,7 +18,7 @@ struct Moves {
 }
 
 #[derive(Model,Copy, Drop, Serde)]
-struct Board_state {
+struct Board {
     #[key]
     game_id: felt252,
     a_1: felt252,
@@ -42,7 +42,7 @@ struct Game {
 }
 
 #[derive(Model,Copy, Drop, Serde)]
-struct Fixedkey {
+struct Fixed {
     #[key]
     fixed_key : ContractAddress,
     worldcount : felt252

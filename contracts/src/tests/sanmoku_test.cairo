@@ -9,12 +9,12 @@ mod tests {
 
 
     // project imports
-    use sanmoku::models::{board_state,moves,game,gate,players,fixedkey};
-    use sanmoku::models::{Moves,Board_state,Square,Game,Players,Fixedkey};
+    use sanmoku::models::{board,moves,game,gate,players,fixed};
+    use sanmoku::models::{Moves,Board,Square,Game,Players,Fixed};
     use sanmoku::actions::{actions,IActionsDispatcher, IActionsDispatcherTrait};
     use sanmoku::erc20_dojo::erc20::{erc_systems, IERC20Dispatcher, IERC20DispatcherTrait};
-    use sanmoku::erc20_dojo::erc20_models::{erc_20_balance, erc_20_allowance, erc_20_meta};
-    use sanmoku::erc20_dojo::erc20_models::{ERC20Balance, ERC20Allowance, ERC20Meta};
+    use sanmoku::erc20_dojo::erc20_models::{ercbalance, ercaallowance, ercmeta};
+    use sanmoku::erc20_dojo::erc20_models::{Ercbalance, Ercaallowance, Ercmeta};
     
 
 
@@ -23,7 +23,7 @@ mod tests {
   // reusable function for tests
     fn setup_world() -> (IWorldDispatcher, IActionsDispatcher, ContractAddress) {
         // models
-        let models = array![erc_20_allowance::TEST_CLASS_HASH, erc_20_balance::TEST_CLASS_HASH, erc_20_meta::TEST_CLASS_HASH, game::TEST_CLASS_HASH, moves::TEST_CLASS_HASH, board_state::TEST_CLASS_HASH, players::TEST_CLASS_HASH, fixedkey::TEST_CLASS_HASH];
+        let models = array![ercaallowance::TEST_CLASS_HASH, ercbalance::TEST_CLASS_HASH, ercmeta::TEST_CLASS_HASH, game::TEST_CLASS_HASH, moves::TEST_CLASS_HASH, board::TEST_CLASS_HASH, players::TEST_CLASS_HASH, fixed::TEST_CLASS_HASH];
         // deploy world with models
         let world = spawn_test_world(models);
         starknet::testing::set_contract_address(world.executor());

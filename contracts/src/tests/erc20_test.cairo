@@ -25,7 +25,7 @@ use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 use sanmoku::erc20_dojo::erc20::{IERC20Dispatcher, IERC20DispatcherTrait};
 
 use sanmoku::erc20_dojo::erc20_models::{
-    ERC20Allowance, erc_20_allowance, ERC20Balance, erc_20_balance, ERC20Meta, erc_20_meta
+    Ercaallowance, ercaallowance, Ercbalance, ercbalance, Ercmeta, ercmeta
 };
 use sanmoku::erc20_dojo::erc20::erc_systems::_worldContractMemberStateTrait;
 use debug::PrintTrait;
@@ -35,9 +35,9 @@ use debug::PrintTrait;
 fn STATE() -> (IWorldDispatcher, sanmoku::erc20_dojo::erc20::erc_systems::ContractState) {
     let world = spawn_test_world(
         array![
-            erc_20_allowance::TEST_CLASS_HASH,
-            erc_20_balance::TEST_CLASS_HASH,
-            erc_20_meta::TEST_CLASS_HASH,
+            ercaallowance::TEST_CLASS_HASH,
+            ercbalance::TEST_CLASS_HASH,
+            ercmeta::TEST_CLASS_HASH,
         ]
     );
     let mut state = sanmoku::erc20_dojo::erc20::erc_systems::contract_state_for_testing();
@@ -48,9 +48,9 @@ fn STATE() -> (IWorldDispatcher, sanmoku::erc20_dojo::erc20::erc_systems::Contra
     fn setup() -> (IWorldDispatcher, sanmoku::erc20_dojo::erc20::erc_systems::ContractState) {
        let world = spawn_test_world(
         array![
-            erc_20_allowance::TEST_CLASS_HASH,
-            erc_20_balance::TEST_CLASS_HASH,
-            erc_20_meta::TEST_CLASS_HASH,
+            ercaallowance::TEST_CLASS_HASH,
+            ercbalance::TEST_CLASS_HASH,
+            ercmeta::TEST_CLASS_HASH,
         ]
     );
         let mut state = sanmoku::erc20_dojo::erc20::erc_systems::contract_state_for_testing();
