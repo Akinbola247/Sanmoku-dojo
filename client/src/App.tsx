@@ -7,6 +7,7 @@ import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Tictactoe from "./pages/Tictactoe";
+import Launch from "./pages/Launch";
 import './index.css';
 
 
@@ -77,6 +78,7 @@ function App() {
       <BrowserRouter>
               <Routes>
                 <Route path="/tictactoe" element={<Tictactoe />} />
+                <Route path="/app" element={<Launch />} />
                 <Route path="/" element={<Home />} />
               </Routes>
             </BrowserRouter>

@@ -1,8 +1,12 @@
 import React from 'react'
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
+
   return (
-    <div>Footer</div>
+    <div className='h-[70px] bg-[#D0D1E5] flex justify-center text-center nova p-6'>
+      <p>&copy; {currentYear} Sanmoku dojo. All Rights Reserved.</p>
+    </div>
   )
 }
 

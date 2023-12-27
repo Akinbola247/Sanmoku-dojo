@@ -1,10 +1,10 @@
 import React from 'react'
-import logo from '../assets/logo.png'
 import frame from '../assets/Frame202.png'
 import '../index.css';
 import { IoRocketSharp } from "react-icons/io5";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { useDojo } from "../DojoContext";
+import { Link } from 'react-router-dom';
 
 
 const Header = () => {
@@ -20,15 +20,19 @@ const Header = () => {
 
         <div className='flex flex-row justify-between items-center w-[85%] mx-auto'>
         
+        <Link to={'/'}>
         <div className='flex w-[200px] my-[10px] mr-96'>
             <img src={frame} alt='logo'/>
         </div>
+        </Link>
 
         <h1 className='press text-[12px]'>About us</h1>
+        <Link to={'/app'}>
         <div className='flex space-x-1 bg-[#FF3D00] w-[160px] h-[40px] border border-[#000000] rounded-lg items-center p-2'>
             <IoRocketSharp className='text-[#FFFFFF]'/>
             <h1 className='press text-[10px] text-[#FFFFFF]' >Launch App</h1>
         </div>
+        </Link>
             <div className='flex space-x-1 w-[110px] border border-[#FF3D00] h-[40px]  rounded-lg items-center p-2'>
             <h1 className='press text-[10px] text-[#FF3D00]' onClick={create}> {isDeploying ? "deploying burner" : 
               <select onChange={(e) => select(e.target.value)}>
@@ -44,7 +48,7 @@ const Header = () => {
             }</h1>
             <RiArrowDropDownLine className='text-[#FF3D00]' />
             </div>
-            {/* <button onClick={clear}>clear burners</button> */}
+            <button onClick={clear}>clear burners</button>
         </div>
 
 
