@@ -7,7 +7,7 @@ import ex from '../assets/ex.png'
 import Register from '../components/Register'
 import Creategame from '../components/Creategame'
 import Chooseavatar from '../components/Chooseavatar'
-import JoinChooseavatar from '../components/JoinChooseavatar'
+import JoinChooseavatar from '../components/Joinchooseavatar'
 import Joingame from '../components/Joingame'
 import { useDojo } from "../DojoContext";
 import { useAppContext } from '../context/Appcontext';
