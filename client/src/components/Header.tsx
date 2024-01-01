@@ -33,10 +33,11 @@ const Header = () => {
             <h1 className='press text-[10px] text-[#FFFFFF]' >Launch App</h1>
         </div>
         </Link>
-            <div className='flex space-x-1 w-[110px] border border-[#FF3D00] h-[40px]  rounded-lg items-center p-2'>
-            <h1 className='press text-[10px] text-[#FF3D00]' onClick={create}> {isDeploying ? "deploying burner" : 
+            <div className='flex space-x-1 w-[110px] border border-[#FF3D00] h-[40px]  rounded-lg items-center p-2'onClick={create}>
+            <h1 className='press text-[10px] text-[#FF3D00]'> {isDeploying ? "deploying burner" : 
               <select onChange={(e) => select(e.target.value)}>
               {list().map((account, index) => {
+                  console.log(account.address)
                 return (
                   <option value={account.address} key={index}>
                     {(account.address).slice(0, 6)}
@@ -59,3 +60,5 @@ const Header = () => {
 }
 
 export default Header
+
+// onClick={create}

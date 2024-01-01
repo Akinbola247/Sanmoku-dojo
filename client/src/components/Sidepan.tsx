@@ -2,7 +2,7 @@ import { MdRocketLaunch } from "react-icons/md";
 
 const Sidepan = () => {
   return (
-    <div className=' w-[23%] h-[50%] rounded-2xl bg-[#353D44] mt-[9%] p-4 overflow-y-scroll'>
+    <div className=' w-[23%] h-[58%] rounded-2xl bg-[#353D44] mt-[9%] p-4 overflow-y-scroll'>
             <div className='w-[90%] h-[45px] search mx-auto rounded-2xl items-center'>
                 <form className='h-[100%] w-[96%] mx-auto items-center p-1'>
                     <div className='h-[100%] text-center'>

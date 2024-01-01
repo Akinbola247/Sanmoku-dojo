@@ -7,6 +7,7 @@ export default {
     extend: {
       backgroundImage: {
         'herobg': "url('./src/assets/background.png')",
+        'firstbg': "url('./src/assets/firstbg.png)",
       }
     },
   },
