@@ -8,7 +8,7 @@ const Infoboard = () => {
     <div className='w-[70%] mt-[9%]'>
         <Welcome />
         <Partygame />
-        <Gamenight />
+
     </div>
   )
 }

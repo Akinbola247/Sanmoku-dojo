@@ -76,25 +76,39 @@ mod tests {
 
         //winning scenario
         starknet::testing::set_contract_address(player_one);
-        sanmoku_.play_game(gameID,Square::Top_Left(()).into());
+        sanmoku_.play_game(gameID,Square::Top_Left(()).into(),player_one);
 
         starknet::testing::set_contract_address(player_two);
-        sanmoku_.play_game(gameID,Square::Tops(()).into());
+        sanmoku_.play_game(gameID,Square::Tops(()).into(),player_two);
 
         starknet::testing::set_contract_address(player_one);
-        sanmoku_.play_game(gameID,Square::Centre(()).into());
+        sanmoku_.play_game(gameID,Square::Centre(()).into(),player_one);
 
         starknet::testing::set_contract_address(player_two);
-        sanmoku_.play_game(gameID,Square::Left(()).into());
+        sanmoku_.play_game(gameID,Square::Left(()).into(),player_two);
 
         starknet::testing::set_contract_address(player_one);
-        let response = sanmoku_.play_game(gameID,Square::Bottom_Right(()).into());
+        let response = sanmoku_.play_game(gameID,Square::Bottom_Right(()).into(),player_one);
         response.print();
 
         let token_dispatcher = IERC20Dispatcher {contract_address : erc20_address};
         let balance = token_dispatcher.balance_of(player_one);
         assert(balance == 200, 'invalid_amount');
     }
+
+     #[test]
+    #[available_gas(30000000000)]
+    fn test_reg_get(){
+        let player_one = starknet::contract_address_const::<0x01>();
+        let player_two = starknet::contract_address_const::<0x02>();
+
+        let (world, sanmoku_, erc20_address ) = setup_world();
+        starknet::testing::set_contract_address(player_one);
+        sanmoku_.register_player('kenny',player_one);
+        let response = sanmoku_.playerstatus(player_one);
+        response.name_.print();
+    }
+
 
      #[test]
     #[available_gas(30000000000)]
@@ -119,50 +133,50 @@ mod tests {
 
             //draw scenario && restart
          starknet::testing::set_contract_address(player_one);
-        sanmoku_.play_game(gameID,Square::Top_Left(()).into());
+        sanmoku_.play_game(gameID,Square::Top_Left(()).into(),player_one);
 
         starknet::testing::set_contract_address(player_two);
-        sanmoku_.play_game(gameID,Square::Tops(()).into());
+        sanmoku_.play_game(gameID,Square::Tops(()).into(),player_two);
 
         starknet::testing::set_contract_address(player_one);
-        sanmoku_.play_game(gameID,Square::Centre(()).into());
+        sanmoku_.play_game(gameID,Square::Centre(()).into(),player_one);
 
         starknet::testing::set_contract_address(player_two);
-        sanmoku_.play_game(gameID,Square::Bottom_Right(()).into());
+        sanmoku_.play_game(gameID,Square::Bottom_Right(()).into(),player_two);
 
         starknet::testing::set_contract_address(player_one);
-        sanmoku_.play_game(gameID,Square::Bottom(()).into());
+        sanmoku_.play_game(gameID,Square::Bottom(()).into(),player_one);
 
         starknet::testing::set_contract_address(player_two);
-        sanmoku_.play_game(gameID,Square::Left(()).into());
+        sanmoku_.play_game(gameID,Square::Left(()).into(),player_two);
 
         starknet::testing::set_contract_address(player_one);
-        sanmoku_.play_game(gameID,Square::Right(()).into());
+        sanmoku_.play_game(gameID,Square::Right(()).into(),player_one);
 
         starknet::testing::set_contract_address(player_two);
-        sanmoku_.play_game(gameID,Square::Bottom_Left(()).into());
+        sanmoku_.play_game(gameID,Square::Bottom_Left(()).into(),player_two);
 
         starknet::testing::set_contract_address(player_one);
-       let response2 = sanmoku_.play_game(gameID,Square::Top_Right(()).into());
+       let response2 = sanmoku_.play_game(gameID,Square::Top_Right(()).into(),player_one);
        response2.print();
 
        sanmoku_.restart_game(gameID,player_one,player_two);
         'restarting...'.print();
 
         starknet::testing::set_contract_address(player_two);
-        sanmoku_.play_game(gameID,Square::Top_Left(()).into());
+        sanmoku_.play_game(gameID,Square::Top_Left(()).into(),player_two);
 
         starknet::testing::set_contract_address(player_one);
-        sanmoku_.play_game(gameID,Square::Tops(()).into());
+        sanmoku_.play_game(gameID,Square::Tops(()).into(),player_one);
 
         starknet::testing::set_contract_address(player_two);
-        sanmoku_.play_game(gameID,Square::Centre(()).into());
+        sanmoku_.play_game(gameID,Square::Centre(()).into(),player_two);
 
         starknet::testing::set_contract_address(player_one);
-        sanmoku_.play_game(gameID,Square::Left(()).into());
+        sanmoku_.play_game(gameID,Square::Left(()).into(),player_one);
 
         starknet::testing::set_contract_address(player_two);
-        let response = sanmoku_.play_game(gameID,Square::Bottom_Right(()).into());
+        let response = sanmoku_.play_game(gameID,Square::Bottom_Right(()).into(),player_two);
         response.print();
 
         let token_dispatcher = IERC20Dispatcher {contract_address : erc20_address};

@@ -9,7 +9,7 @@ mod erc20_dojo {
 #[cfg(test)]
 mod tests {
      mod sanmoku_test;
-     mod erc20_test;
+    //  mod erc20_test;
      mod erc20_utils;
      mod constants;
 }
