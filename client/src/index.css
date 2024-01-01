@@ -5,6 +5,7 @@
 @tailwind utilities;
 
 
+
 .press{
   font-family: 'Press Start 2P', cursive;
 }
@@ -32,11 +33,11 @@
 }
 
 .custom {
-  background-image:linear-gradient(rgba(255, 255, 255, 0.66), rgba(255, 255, 255, 0.641)), url('./src/assets/background.png');
+  background-image:linear-gradient(rgba(255, 255, 255, 0.66), rgba(255, 255, 255, 0.641)), url('../src/assets/background.png');
 }
 
 .customimage {
-  background-image: url('./src/assets/firstbg.png')
+  background-image: url('../src/assets/firstbg.png')
 }
 
 
