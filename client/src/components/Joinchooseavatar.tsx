@@ -6,7 +6,7 @@ import { useAppContext } from '../context/Appcontext';
 
 
 
-const Register = () => {
+const JoinChooseavatar = () => {
   const [selectedAvatar, setSelected] = useState(0)
   const [xbackgroundColor, setXBackgroundColor] = useState(false);
   const [obackgroundColor, setOBackgroundColor] = useState(false);
@@ -73,4 +73,4 @@ useEffect(() => {
   )
 }
 
-export default Register
+export default JoinChooseavatar
