@@ -26,7 +26,7 @@ const Hero = () => {
                 <p className='press text-[12px]'>Experience the Excitement at Sanmoku Dojo Game Hub! Dive into a world of thrilling games and engaging challenges. Join us and explore the thrill of Sanmoku Dojo's vibrant gaming community today!</p>
             
                 <div className='flex space-x-4 w-[70%] mx-auto'>
-                <div className='flex space-x-1 w-[150px] border border-[#FF3D00] h-[30px] text-center rounded-lg items-center p-2 ' onClick={create}>
+                <div className='flex space-x-1 w-[150px] border border-[#FF3D00] h-[30px] text-center rounded-lg items-center p-2 cursor-pointer' onClick={create}>
                  <h1 className='press text-[10px] mx-auto text-center text-[#FF3D00]'>Deploy Burner</h1>
                 </div>
                 <Link to={'/app'}>

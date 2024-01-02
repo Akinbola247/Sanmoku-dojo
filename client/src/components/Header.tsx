@@ -1,3 +1,4 @@
+/* eslint-disable no-unsafe-optional-chaining */
 import React from 'react'
 import frame from '../assets/Frame202.png'
 import '../index.css';
@@ -15,6 +16,9 @@ const Header = () => {
     },
     account: { create, list, select, account, isDeploying, clear},
   } = useDojo();
+
+  const address = isDeploying ? "deploying burner" : (list()[0]?.address?.toString()?.slice(0, 9) || "0x0");
+
   return (
     <div className='w-[100%] h-[80px] absolute border border-b-[#000000]'>
 
@@ -34,7 +38,7 @@ const Header = () => {
         </div>
         </Link>
             <div className='flex w-[140px] border border-[#FF3D00] h-[40px]  rounded-lg items-center p-2'>
-            <h1 className='press text-[10px] text-[#FF3D00] flex mx-auto'> {isDeploying ? "deploying burner" : (list()[0].address).toString().slice(0, 9) ?? "0x0"}
+            <h1 className='press text-[10px] text-[#FF3D00] flex mx-auto'> {address}
               </h1>
             </div>
             <div className='flex w-[140px] border border-[#FF3D00] h-[40px]  rounded-lg items-center p-2'>
