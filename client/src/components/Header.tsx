@@ -21,24 +21,24 @@ const Header = () => {
         <div className='flex flex-row justify-between items-center w-[85%] mx-auto'>
         
         <Link to={'/'}>
-        <div className='flex w-[200px] my-[10px] mr-96'>
+        <div className='flex w-[200px] my-[10px] mr-80'>
             <img src={frame} alt='logo'/>
         </div>
         </Link>
 
         <h1 className='press text-[12px]'>About us</h1>
         <Link to={'/app'}>
-        <div className='flex space-x-1 bg-[#FF3D00] w-[160px] h-[40px] border border-[#000000] rounded-lg items-center p-2'>
+        <div className='flex space-x-1 bg-[#FF3D00] w-[140px] h-[40px] border border-[#000000] rounded-lg items-center p-2'>
             <IoRocketSharp className='text-[#FFFFFF]'/>
             <h1 className='press text-[10px] text-[#FFFFFF]' >Launch App</h1>
         </div>
         </Link>
-            <div className='flex w-[160px] border border-[#FF3D00] h-[40px]  rounded-lg items-center p-2'>
+            <div className='flex w-[140px] border border-[#FF3D00] h-[40px]  rounded-lg items-center p-2'>
             <h1 className='press text-[10px] text-[#FF3D00] flex mx-auto'> {isDeploying ? "deploying burner" : (list()[0].address).toString().slice(0, 9)}
               </h1>
             </div>
-            <div className='flex w-[160px] border border-[#FF3D00] h-[40px]  rounded-lg items-center p-2'>
-            <button onClick={clear} className='press text-[10px] w-[100%] text-[#FF3D00] flex mx-auto' >clear burners</button>
+            <div className='flex w-[140px] border border-[#FF3D00] h-[40px]  rounded-lg items-center p-2'>
+            <button onClick={clear} className='press text-[8px] text-center text-[#FF3D00] flex mx-auto' >clear burners</button>
             </div>
         </div>
 

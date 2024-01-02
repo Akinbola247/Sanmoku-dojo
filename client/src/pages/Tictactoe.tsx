@@ -41,17 +41,7 @@ const Tictactoe = () => {
     setC2,
     setC3,resultdialog,setresultdialog,setwinningresult,playerone,playertwo} = useAppContext()
     
-  const moves = [
-    {
-      move: "X played to B1"
-    },
-    {
-      move: "O played to B2"
-    },
-    {
-      move: "X played to C1"
-    },
-  ]
+  const moves = []
   
 
 // entity id we are syncing
@@ -294,9 +284,54 @@ const Tictactoe = () => {
       <div className='flex w-[90%] h-[70%] space-x-10 mt-4 mx-auto p-4'>
           <div className='w-[30%] h-[80%] p-4'>
             <h1 className='press text-[14px] text-center'>Moves</h1>
-            {moves.map((item, index)=>{
-            return <p key={index} className='nova text-[14px] text-center mt-2'>{item.move}</p>   
-            })}
+          
+           <p className='nova text-[14px] text-center mt-2'>
+           {A1 === "X" ? (
+                                          "X played to A1"
+                                        ) : A1 === "O" ? (
+                                          "O played to A1"
+                                        ) : null}</p>   
+           <p className='nova text-[14px] text-center mt-2'>    {A2 === "X" ? (
+                                          "X played to A2"
+                                        ) : A2 === "O" ? (
+                                          "O played to A2"
+                                        ) : null}</p>   
+           <p className='nova text-[14px] text-center mt-2'>    {A3 === "X" ? (
+                                          "X played to A3"
+                                        ) : A3 === "O" ? (
+                                          "O played to A3"
+                                        ) : null}</p>   
+           <p className='nova text-[14px] text-center mt-2'>    {B1 === "X" ? (
+                                          "X played to B1"
+                                        ) : B1 === "O" ? (
+                                          "O played to B1"
+                                        ) : null}</p>   
+           <p className='nova text-[14px] text-center mt-2'>{B2 === "X" ? (
+                                          "X played to B2"
+                                        ) : B2 === "O" ? (
+                                          "O played to B2"
+                                        ) : null}</p>   
+           <p className='nova text-[14px] text-center mt-2'>{B3 === "X" ? (
+                                          "X played to B3"
+                                        ) : B3 === "O" ? (
+                                          "O played to B3"
+                                        ) : null}</p>   
+           <p className='nova text-[14px] text-center mt-2'>{C1 === "X" ? (
+                                          "X played to B1"
+                                        ) : C1 === "O" ? (
+                                          "O played to C1"
+                                        ) : null}</p>   
+           <p className='nova text-[14px] text-center mt-2'>{C2 === "X" ? (
+                                          "X played to C2"
+                                        ) : C2 === "O" ? (
+                                          "O played to C2"
+                                        ) : null}</p>   
+           <p className='nova text-[14px] text-center mt-2'>{C3 === "X" ? (
+                                          "X played to C3"
+                                        ) : C3 === "O" ? (
+                                          "O played to C3"
+                                        ) : null}</p>   
+
           </div>
               <div className='flex w-[100%] h-[100%] space-x-12'>
                 <div className='w-[60%]'>
