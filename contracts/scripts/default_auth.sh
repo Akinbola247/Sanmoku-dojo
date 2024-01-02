@@ -2,7 +2,7 @@
 set -euo pipefail
 pushd $(dirname "$0")/..
 
-export RPC_URL="https://api.cartridge.gg/x/sanmoku/katana";
+export RPC_URL="https://api.cartridge.gg/x/sanmokuv3/katana";
 
 export WORLD_ADDRESS=$(cat /Users/kenzman/Desktop/dojojam/Sanmoku-dojo/contracts/target/release/manifest.json | jq -r '.world.address')
 
@@ -18,7 +18,7 @@ echo actions : $ERC_ADDRESS
 echo "---------------------------------------------------------------------------"
 
 # enable system -> component authorizations
-COMPONENTS=("Board" "Ercaallowance" "Ercbalance" "Ercmeta" "Game" "Gate" "Moves" "Players" "Fixed" )
+COMPONENTS=("Board" "Ercaallowance" "Ercbalance" "Ercmeta" "Game" "Gate" "Moves" "Players" "Fixed" "Response" )
 
 for component in ${COMPONENTS[@]}; do
     sozo auth writer $component $ACTIONS_ADDRESS --world $WORLD_ADDRESS --rpc-url $RPC_URL

@@ -18,7 +18,7 @@ trait IActions<TState> {
 
 #[dojo::contract]
 mod actions {
-    use sanmoku::models::{Moves, Board, Game, Square, Winning_tuple, Gate,Players,Players_tuple,Fixed};
+    use sanmoku::models::{Moves, Board, Game, Square, Winning_tuple, Gate,Players,Players_tuple,Fixed,Response};
     use sanmoku::erc20_dojo::erc20::{IERC20Dispatcher, IERC20DispatcherTrait};
     use traits::TryInto;
     use option::OptionTrait;
@@ -121,7 +121,7 @@ mod actions {
         fn play_game(ref self: ContractState, game_id: felt252, square: Square, player : ContractAddress) -> felt252 {
             let world = self.world_dispatcher.read();
             // obtain current board state
-            let (mut board_state, mut game,) = get!(world, game_id, (Board, Game));
+            let (mut board_state, mut game, mut gameresponse) = get!(world, game_id, (Board, Game, Response)); 
             let mut moves = get!(world, player, (Moves));
             let mut opponent_move = get!(world, moves.opponent, (Moves));
             // check player 
@@ -142,23 +142,23 @@ mod actions {
             let mut response : felt252 = ''.into();
             if result == 1 && moves.avatar_choice == 'X' {
                 token_dispatcher.mint_(moves.player, 200);
-                response = 'PLAYER X WINS'.into();
+                gameresponse.gameresponse = 'PLAYER X WINS'.into();
             } else if result == 1 && moves.avatar_choice == 'O' {
                 token_dispatcher.mint_(moves.player, 200);
-                response = 'PLAYER O WINS'.into();
+                gameresponse.gameresponse = 'PLAYER O WINS'.into();
             } else if result == 2 {
-               response = 'DRAW'.into();
+               gameresponse.gameresponse = 'DRAW'.into();
             }
-
+             
             //update/set board state here
-            set!(world, (current_move_state, played_move_board_state, opponent_move));
+            set!(world, (current_move_state, played_move_board_state, opponent_move,gameresponse));
             emit!(
                 world,
                 Result {
                     result : response
                 }
             );
-           response
+           gameresponse.gameresponse
         }
 
         fn init(ref self: ContractState, token_address: ContractAddress){
@@ -179,7 +179,7 @@ mod actions {
 
         fn restart_game(ref self: ContractState, game_id: felt252, player1 :ContractAddress, player2: ContractAddress) {
             let world = self.world_dispatcher.read();
-            let (mut board_state, mut game) = get!(world, game_id, (Board, Game));
+            let (mut board_state, mut game, mut gameresponses) = get!(world, game_id, (Board, Game,Response));
             let mut moves = get!(world, player1, (Moves));
             let mut moves2 = get!(world, player2, (Moves));
             assert(game_id == game.game_id, 'wrong_ID');
@@ -214,7 +214,8 @@ mod actions {
                 board_state.c_2 = '';
                 board_state.c_3 = '';
                 //set default state 
-                set!(world, (moves, board_state, game));
+                gameresponses.gameresponse = 'restarted';
+                set!(world, (moves, board_state, game,gameresponses));
                 set!(world, (moves2, board_state, game));
         }
         fn register_player(ref self: ContractState, name_: felt252, player : ContractAddress){

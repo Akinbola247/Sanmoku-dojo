@@ -121,5 +121,18 @@ export function defineContractComponents(world: World) {
 	      }
 	    );
 	  })(),
+	  Response: (() => {
+	    return defineComponent(
+	      world,
+	      { game_id: RecsType.BigInt, gameresponse: RecsType.BigInt },
+	      {
+	        metadata: {
+	          name: "Response",
+	          types: ["felt252","felt252"],
+	          customTypes: [],
+	        },
+	      }
+	    );
+	  })(),
   };
 }

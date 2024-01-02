@@ -7,10 +7,7 @@ import { useAppContext } from '../context/Appcontext';
 
 
 const Creategame = () => {
-  const [playerone, setplayerone] = useState('');
-  const [playertwo, setplayertwo] = useState('');
-  const [gaemeid, setGameID] = useState('')
-  const {setCreategame,setavatardialog,setSharedgameID} = useAppContext()
+  const {setCreategame,setavatardialog,setSharedgameID,playerone,playertwo,setplayerone,setplayertwo} = useAppContext()
 
 
 

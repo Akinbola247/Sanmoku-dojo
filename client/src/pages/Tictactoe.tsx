@@ -9,11 +9,12 @@ import Creategame from '../components/Creategame'
 import Chooseavatar from '../components/Chooseavatar'
 import JoinChooseavatar from '../components/Joinchooseavatar'
 import Joingame from '../components/Joingame'
+import Result from '../components/Result'
 import { useDojo } from "../DojoContext";
 import { useAppContext } from '../context/Appcontext';
 import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { useComponentValue } from "@dojoengine/react";
-import { Entity } from "@dojoengine/recs";
+import { Entity, Type } from "@dojoengine/recs";
 
 
 
@@ -26,7 +27,7 @@ const Tictactoe = () => {
     const {
       setup: {
         systemCalls: { initiate, spawnavatar, registerPlayer, restart,getplayerdet,play},
-        components : {Moves,Board,Game,Gate,Players,Fixed},
+        components : {Moves,Board,Response,Game,Ercbalance,Gate,Players,Fixed},
       },
       account: { create, list, select, account, isDeploying, clear},
     } = useDojo();
@@ -38,7 +39,7 @@ const Tictactoe = () => {
     setB3,
     setC1,
     setC2,
-    setC3} = useAppContext()
+    setC3,resultdialog,setresultdialog,setwinningresult,playerone,playertwo} = useAppContext()
     
   const moves = [
     {
@@ -55,10 +56,18 @@ const Tictactoe = () => {
 
 // entity id we are syncing
   const entityId = getEntityIdFromKeys([BigInt(sharedgameID ?? 0)]) as Entity;
+  // const entityIdtwo : Type.BigInt = BigInt(list()[0].address)
+  // const contractaddress  = "0x300629f97a13bfe0575f59dd966260496e97caf3ab1944698a1773b3867845" as Entity
 
   // get current component values
   const boardstat = useComponentValue(Board, entityId);
-  console.log(boardstat)
+  // console.log(boardstat)
+
+  const response = useComponentValue(Response, entityId)
+  // console.log(response)
+
+  // const ercbalance = useComponentValue(Ercbalance,contractaddress,entityIdtwo)
+  // console.log(ercbalance);
   
   useEffect(() => {
     if(boardstat?.a_1 == 88n ){
@@ -115,7 +124,30 @@ const Tictactoe = () => {
     if (boardstat?.c_3 == 79n){
       setC3("O");
     }
-  }, [boardstat])
+    if(boardstat?.a_1 != 0n && boardstat?.a_2 != 0n && boardstat?.a_3 != 0n && boardstat?.b_1 != 0n && boardstat?.b_2 != 0n && boardstat?.b_3 != 0n && boardstat?.c_1 != 0n && boardstat?.c_2 != 0n && boardstat?.c_3 != 0n && boardstat != undefined){
+      setwinningresult("DRAW")
+      setresultdialog(true)
+    }
+    if(response?.gameresponse == 6361852863635204326893629820499n && response != undefined){
+      setwinningresult("PLAYER X WINS")
+      setresultdialog(true)
+    }
+    if(response?.gameresponse == 6361852863635204316998025170515n && response != undefined){
+      setwinningresult("PLAYER 0 WINS")
+      setresultdialog(true)
+    }
+    if(boardstat?.a_1 == 0n && boardstat?.a_2 == 0n && boardstat?.a_3 == 0n && boardstat?.b_1 == 0n && boardstat?.b_2 == 0n && boardstat?.b_3 == 0n && boardstat?.c_1 == 0n && boardstat?.c_2 == 0n && boardstat?.c_3 == 0n && boardstat != undefined){
+      setA1(null)
+      setA2(null)
+      setA3(null)
+      setB1(null)
+      setB2(null)
+      setB3(null)
+      setC1(null)
+      setC2(null)
+      setC3(null)
+    }
+  }, [boardstat,response])
   
 
  
@@ -221,6 +253,10 @@ const Tictactoe = () => {
     }
   }
 
+  const handlerestart = async () =>{
+  restart(account,sharedgameID,playerone,playertwo)
+  setresultdialog(false)
+  }
 
 
 
@@ -235,6 +271,7 @@ const Tictactoe = () => {
       {avatardialog && <Chooseavatar />}
       {joindialog && <Joingame />}
       {joinInputdilog && <JoinChooseavatar />}
+      {resultdialog && <Result />}
       <div className='w-[90%] mx-auto pt-[8%] justify-end flex'>
           <div className='press flex space-x-4 border border-[#000000]  rounded-xl w-[350px] justify-between h-[70px] p-3 items-center text-center'>
               <div className='w-[35%] space-y-2'>
@@ -268,7 +305,7 @@ const Tictactoe = () => {
                               <img src={purple}  alt='purple'/>
                               <h1 className='press text-[12px]'>Create Game</h1>
                             </div>
-                            <div className='flex h-[50px] items-center space-x-3'>
+                            <div className='flex h-[50px] items-center space-x-3 cursor-pointer' onClick={()=>(handlerestart())}>
                               <img src={yellow} alt='yellow' />
                               <h1 className='press text-[12px]'>Restart Game</h1>
                             </div>

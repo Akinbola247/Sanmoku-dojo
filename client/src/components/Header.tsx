@@ -33,23 +33,13 @@ const Header = () => {
             <h1 className='press text-[10px] text-[#FFFFFF]' >Launch App</h1>
         </div>
         </Link>
-            <div className='flex space-x-1 w-[110px] border border-[#FF3D00] h-[40px]  rounded-lg items-center p-2'onClick={create}>
-            <h1 className='press text-[10px] text-[#FF3D00]'> {isDeploying ? "deploying burner" : 
-              <select onChange={(e) => select(e.target.value)}>
-              {list().map((account, index) => {
-                  console.log(account.address)
-                return (
-                  <option value={account.address} key={index}>
-                    {(account.address).slice(0, 6)}
-                  </option>
-                );
-              })}
-              i
-            </select>
-            }</h1>
-            <RiArrowDropDownLine className='text-[#FF3D00]' />
+            <div className='flex w-[160px] border border-[#FF3D00] h-[40px]  rounded-lg items-center p-2'>
+            <h1 className='press text-[10px] text-[#FF3D00] flex mx-auto'> {isDeploying ? "deploying burner" : (list()[0].address).toString().slice(0, 9)}
+              </h1>
             </div>
-            <button onClick={clear}>clear burners</button>
+            <div className='flex w-[160px] border border-[#FF3D00] h-[40px]  rounded-lg items-center p-2'>
+            <button onClick={clear} className='press text-[10px] w-[100%] text-[#FF3D00] flex mx-auto' >clear burners</button>
+            </div>
         </div>
 
 

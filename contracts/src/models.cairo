@@ -48,6 +48,13 @@ struct Fixed {
     worldcount : felt252
 }
 
+#[derive(Model,Copy, Drop, Serde)]
+struct Response {
+    #[key]
+    game_id: felt252,
+    gameresponse : felt252,
+}
+
 
  #[derive(Serde, Copy, Drop, Introspect)]
     enum Square {
