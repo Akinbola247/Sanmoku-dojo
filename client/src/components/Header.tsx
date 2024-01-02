@@ -34,7 +34,7 @@ const Header = () => {
         </div>
         </Link>
             <div className='flex w-[140px] border border-[#FF3D00] h-[40px]  rounded-lg items-center p-2'>
-            <h1 className='press text-[10px] text-[#FF3D00] flex mx-auto'> {isDeploying ? "deploying burner" : (list()[0].address).toString().slice(0, 9)}
+            <h1 className='press text-[10px] text-[#FF3D00] flex mx-auto'> {isDeploying ? "deploying burner" : (list()[0].address).toString().slice(0, 9) ?? "0x0"}
               </h1>
             </div>
             <div className='flex w-[140px] border border-[#FF3D00] h-[40px]  rounded-lg items-center p-2'>
