@@ -2,9 +2,6 @@
 import { createContext, useContext, useMemo, useState, ReactNode } from 'react';
 
 
-
-
-
 interface IAppContext {
   sharedavatar: null | any;
   sharedgameID: null | any;
@@ -13,6 +10,10 @@ interface IAppContext {
   joindialog : null | any;
   joininput : null | any;
   joinInputdilog : null | any;
+  resultdialog : null | any;
+  winningresult : null | any;
+  playerone : null | any;
+  playertwo : null | any;
   A1 : null | any;
   A2 : null | any;
   A3 : null | any;
@@ -38,6 +39,11 @@ interface IAppContext {
   setC1: React.Dispatch<React.SetStateAction<any>>;
   setC2: React.Dispatch<React.SetStateAction<any>>;
   setC3: React.Dispatch<React.SetStateAction<any>>;
+  setresultdialog: React.Dispatch<React.SetStateAction<any>>;
+  setwinningresult: React.Dispatch<React.SetStateAction<any>>;
+  setplayerone: React.Dispatch<React.SetStateAction<any>>;
+  setplayertwo: React.Dispatch<React.SetStateAction<any>>;
+
 }
 
 const initialData: IAppContext = {
@@ -48,6 +54,10 @@ const initialData: IAppContext = {
   joindialog : null,
   joininput : null,
   joinInputdilog : null,
+  resultdialog : null,
+  winningresult : null,
+  playerone : null,
+  playertwo : null,
   A1 : null,
   A2 : null,
   A3 : null,
@@ -73,6 +83,10 @@ const initialData: IAppContext = {
   setC1: () => {},
   setC2: () => {},
   setC3: () => {},
+  setresultdialog: () => {},
+  setwinningresult: () => {},
+  setplayerone: () => {},
+  setplayertwo: () => {},
 };
 
 export const AppContext = createContext<IAppContext>(initialData);
@@ -102,6 +116,10 @@ const AppProvider = ({ children }: IAppProvider) => {
   const [C1, setC1] = useState<null | any>(null);
   const [C2, setC2] = useState<null | any>(null);
   const [C3, setC3] = useState<null | any>(null);
+  const [resultdialog, setresultdialog] = useState<null | any>(null);
+  const [winningresult, setwinningresult] = useState<null | any>(null);
+  const [playerone, setplayerone] = useState<null | any>(null);
+  const [playertwo, setplayertwo] = useState<null | any>(null);
 
   const contextValue = useMemo(() => ({
     sharedavatar,
@@ -120,6 +138,10 @@ const AppProvider = ({ children }: IAppProvider) => {
     C1,
     C2,
     C3,
+    resultdialog,
+    winningresult,
+    playerone,
+    playertwo,
     setSharedavatar,
     setSharedgameID,
     setCreategame,
@@ -136,7 +158,11 @@ const AppProvider = ({ children }: IAppProvider) => {
     setC1,
     setC2,
     setC3,
-  }), [sharedavatar, sharedgameID,creategame,avatardialog,joindialog,joininput,joinInputdilog,A1,A2,A3,B1,B2,B3,C1,C2,C3]);
+    setresultdialog,
+    setwinningresult,
+    setplayerone,
+    setplayertwo
+  }), [sharedavatar, sharedgameID,creategame,avatardialog,joindialog,joininput,joinInputdilog,A1,A2,A3,B1,B2,B3,C1,C2,C3,resultdialog,winningresult,playerone,playertwo]);
 
   return (
     <AppContext.Provider value={contextValue}>

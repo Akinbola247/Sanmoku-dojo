@@ -16,6 +16,7 @@ export function createClientComponents({
     Gate: overridableComponent(contractComponents.Gate),
     Moves: overridableComponent(contractComponents.Moves),
     Players: overridableComponent(contractComponents.Players),
-    Fixed: overridableComponent(contractComponents.Fixed)
+    Fixed: overridableComponent(contractComponents.Fixed),
+    Response: overridableComponent(contractComponents.Response)
   };
 }

@@ -9,7 +9,7 @@
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "codegen": "graphql-codegen",
-    "create-components": "npx @dojoengine/core ../contracts/target/release/manifest.json src/dojo/contractComponents.ts https://api.cartridge.gg/x/sanmoku/katana 0x13ca39fd769da93e648e5ba76781e33cd633cacd8de01dd157a339217a5022d"
+    "create-components": "npx @dojoengine/core ../contracts/target/release/manifest.json src/dojo/contractComponents.ts https://api.cartridge.gg/x/sanmokuv3/katana 0x13ca39fd769da93e648e5ba76781e33cd633cacd8de01dd157a339217a5022d"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.8.2",
@@ -24,6 +24,7 @@
     "@latticexyz/react": "^2.0.0-next.11",
     "@latticexyz/utils": "^2.0.0-next.11",
     "autoprefixer": "^10.4.16",
+    "buffer": "^6.0.3",
     "ethers": "^5.7.2",
     "framer-motion": "^10.16.16",
     "graphql": "^16.7.1",

@@ -22,7 +22,7 @@ initializer_class_hash = "0xbeef"
 # world_address = "0x13ca39fd769da93e648e5ba76781e33cd633cacd8de01dd157a339217a5022d"
 
 # slot deploy
-rpc_url = "https://api.cartridge.gg/x/sanmoku/katana"
-account_address = "0x50f6f359f64066e2787e9b579e25b475034557f2d69b87a34cd37757d8697c4"
-private_key = "0x7054d98f2a4ac8e81fc531c8c3b572f323b304cdda1bf6e086cee68ca0dc8dc"
+rpc_url = "https://api.cartridge.gg/x/sanmokuv3/katana"
+account_address = "0x4e539cb2df7e6ce9a49277b1538bff0dcd06119ed13c35231e4a9219b3b2eab"
+private_key = "0x3d8c468f2584cc674a9e82361560a0341f8c1cdaa35d1541686b9e591372eb3"
 # world = "0x46da19a353ccab7f5f4882d1157117cb19d0bd11b51c20910dba750f24cf91e"
